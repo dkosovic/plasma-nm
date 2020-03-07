@@ -18,24 +18,24 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "openswanauth.h"
-#include "ui_openswanauth.h"
-#include "nm-openswan-service.h"
+#include "libreswanauth.h"
+#include "ui_libreswanauth.h"
+#include "nm-libreswan-service.h"
 
 #include <QString>
 
-class OpenswanAuthDialogPrivate
+class LibreswanAuthDialogPrivate
 {
 public:
-    Ui_OpenswanAuth ui;
+    Ui_LibreswanAuth ui;
     NetworkManager::VpnSetting::Ptr setting;
 };
 
-OpenswanAuthDialog::OpenswanAuthDialog(const NetworkManager::VpnSetting::Ptr &setting, QWidget * parent)
+LibreswanAuthDialog::LibreswanAuthDialog(const NetworkManager::VpnSetting::Ptr &setting, QWidget * parent)
     : SettingWidget(setting, parent)
-    , d_ptr(new OpenswanAuthDialogPrivate)
+    , d_ptr(new LibreswanAuthDialogPrivate)
 {
-    Q_D(OpenswanAuthDialog);
+    Q_D(LibreswanAuthDialog);
     d->ui.setupUi(this);
     d->setting = setting;
 
@@ -44,25 +44,25 @@ OpenswanAuthDialog::OpenswanAuthDialog(const NetworkManager::VpnSetting::Ptr &se
     KAcceleratorManager::manage(this);
 }
 
-OpenswanAuthDialog::~OpenswanAuthDialog()
+LibreswanAuthDialog::~LibreswanAuthDialog()
 {
     delete d_ptr;
 }
 
-void OpenswanAuthDialog::readSecrets()
+void LibreswanAuthDialog::readSecrets()
 {
-    Q_D(OpenswanAuthDialog);
+    Q_D(LibreswanAuthDialog);
     const NMStringMap data = d->setting->data();
     const NMStringMap secrets = d->setting->secrets();
 
-    const QString groupName = data.value(NM_OPENSWAN_LEFTID);
+    const QString groupName = data.value(NM_LIBRESWAN_LEFTID);
     if (!groupName.isEmpty()) {
         d->ui.leGroupName->setText(groupName);
     }
 
     bool haveUserPassword = true;
-    if (data.value(NM_OPENSWAN_XAUTH_PASSWORD_INPUT_MODES) != NM_OPENSWAN_PW_TYPE_UNUSED) {
-        d->ui.leUserPassword->setText(secrets.value(NM_OPENSWAN_XAUTH_PASSWORD));
+    if (data.value(NM_LIBRESWAN_XAUTH_PASSWORD_INPUT_MODES) != NM_LIBRESWAN_PW_TYPE_UNUSED) {
+        d->ui.leUserPassword->setText(secrets.value(NM_LIBRESWAN_XAUTH_PASSWORD));
     } else {
         d->ui.leUserPassword->setVisible(false);
         d->ui.userPasswordLabel->setVisible(false);
@@ -70,8 +70,8 @@ void OpenswanAuthDialog::readSecrets()
     }
 
     bool haveGroupPassword = true;
-    if (data.value(NM_OPENSWAN_PSK_INPUT_MODES) != NM_OPENSWAN_PW_TYPE_UNUSED) {
-        d->ui.leGroupPassword->setText(secrets.value(NM_OPENSWAN_PSK_VALUE));
+    if (data.value(NM_LIBRESWAN_PSK_INPUT_MODES) != NM_LIBRESWAN_PW_TYPE_UNUSED) {
+        d->ui.leGroupPassword->setText(secrets.value(NM_LIBRESWAN_PSK_VALUE));
     } else {
         d->ui.leGroupPassword->setVisible(false);
         d->ui.groupPasswordLabel->setVisible(false);
@@ -85,19 +85,19 @@ void OpenswanAuthDialog::readSecrets()
     }
 }
 
-QVariantMap OpenswanAuthDialog::setting() const
+QVariantMap LibreswanAuthDialog::setting() const
 {
-    Q_D(const OpenswanAuthDialog);
+    Q_D(const LibreswanAuthDialog);
 
     NMStringMap secrets;
     QVariantMap result;
 
     if (!d->ui.leUserPassword->text().isEmpty()) {
-        secrets.insert(NM_OPENSWAN_XAUTH_PASSWORD, d->ui.leUserPassword->text());
+        secrets.insert(NM_LIBRESWAN_XAUTH_PASSWORD, d->ui.leUserPassword->text());
     }
 
     if (!d->ui.leGroupPassword->text().isEmpty()) {
-        secrets.insert(NM_OPENSWAN_PSK_VALUE, d->ui.leGroupPassword->text());
+        secrets.insert(NM_LIBRESWAN_PSK_VALUE, d->ui.leGroupPassword->text());
     }
 
     result.insert("secrets", QVariant::fromValue<NMStringMap>(secrets));

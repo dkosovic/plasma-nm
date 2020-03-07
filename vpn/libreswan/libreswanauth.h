@@ -18,35 +18,27 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PLASMA_NM_OPENSWAN_WIDGET_H
-#define PLASMA_NM_OPENSWAN_WIDGET_H
+#ifndef PLASMA_NM_LIBRESWAN_AUTH_H
+#define PLASMA_NM_LIBRESWAN_AUTH_H
 
 #include <NetworkManagerQt/VpnSetting>
 
 #include "settingwidget.h"
 
-namespace Ui
-{
-class OpenswanWidget;
-}
+class LibreswanAuthDialogPrivate;
 
-class OpenswanWidget : public SettingWidget
+class LibreswanAuthDialog : public SettingWidget
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(LibreswanAuthDialog)
 public:
-    explicit OpenswanWidget(const NetworkManager::VpnSetting::Ptr &setting, QWidget *parent = nullptr, Qt::WindowFlags f = {});
-    ~OpenswanWidget() override;
-
-    void loadConfig(const NetworkManager::Setting::Ptr &setting) override;
-    void loadSecrets(const NetworkManager::Setting::Ptr &setting) override;
-
+    explicit LibreswanAuthDialog(const NetworkManager::VpnSetting::Ptr &setting, QWidget *parent = nullptr);
+    ~LibreswanAuthDialog() override;
+    virtual void readSecrets();
     QVariantMap setting() const override;
 
-    bool isValid() const override;
-
 private:
-    Ui::OpenswanWidget *m_ui;
-    NetworkManager::VpnSetting::Ptr m_setting;
+    LibreswanAuthDialogPrivate *const d_ptr;
 };
 
-#endif // PLASMA_NM_OPENSWAN_WIDGET_H
+#endif // PLASMA_NM_LIBRESWAN_AUTH_H

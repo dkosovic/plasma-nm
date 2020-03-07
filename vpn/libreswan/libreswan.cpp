@@ -18,62 +18,62 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "openswan.h"
+#include "libreswan.h"
 
 #include <KPluginFactory>
 
-#include "openswanwidget.h"
-#include "openswanauth.h"
+#include "libreswanwidget.h"
+#include "libreswanauth.h"
 
-K_PLUGIN_CLASS_WITH_JSON(OpenswanUiPlugin, "plasmanetworkmanagement_openswanui.json")
+K_PLUGIN_CLASS_WITH_JSON(LibreswanUiPlugin, "plasmanetworkmanagement_libreswanui.json")
 
-OpenswanUiPlugin::OpenswanUiPlugin(QObject * parent, const QVariantList &)
+LibreswanUiPlugin::LibreswanUiPlugin(QObject * parent, const QVariantList &)
     : VpnUiPlugin(parent)
 {
 }
 
-OpenswanUiPlugin::~OpenswanUiPlugin()
+LibreswanUiPlugin::~LibreswanUiPlugin()
 {
 }
 
-SettingWidget * OpenswanUiPlugin::widget(const NetworkManager::VpnSetting::Ptr &setting, QWidget * parent)
+SettingWidget * LibreswanUiPlugin::widget(const NetworkManager::VpnSetting::Ptr &setting, QWidget * parent)
 {
-    return new OpenswanWidget(setting, parent);
+    return new LibreswanWidget(setting, parent);
 }
 
-SettingWidget * OpenswanUiPlugin::askUser(const NetworkManager::VpnSetting::Ptr &setting, QWidget * parent)
+SettingWidget * LibreswanUiPlugin::askUser(const NetworkManager::VpnSetting::Ptr &setting, QWidget * parent)
 {
-    return new OpenswanAuthDialog(setting, parent);
+    return new LibreswanAuthDialog(setting, parent);
 }
 
-QString OpenswanUiPlugin::suggestedFileName(const NetworkManager::ConnectionSettings::Ptr &connection) const
+QString LibreswanUiPlugin::suggestedFileName(const NetworkManager::ConnectionSettings::Ptr &connection) const
 {
     Q_UNUSED(connection);
     return QString();
 }
 
-QString OpenswanUiPlugin::supportedFileExtensions() const
+QString LibreswanUiPlugin::supportedFileExtensions() const
 {
     return QString();
 }
 
-NMVariantMapMap OpenswanUiPlugin::importConnectionSettings(const QString &fileName)
+NMVariantMapMap LibreswanUiPlugin::importConnectionSettings(const QString &fileName)
 {
     Q_UNUSED(fileName);
 
-    // TODO : import the Openswan connection from file and return settings
+    // TODO : import the Libreswan connection from file and return settings
     mError = VpnUiPlugin::NotImplemented;
     return NMVariantMapMap();
 }
 
-bool OpenswanUiPlugin::exportConnectionSettings(const NetworkManager::ConnectionSettings::Ptr &connection, const QString &fileName)
+bool LibreswanUiPlugin::exportConnectionSettings(const NetworkManager::ConnectionSettings::Ptr &connection, const QString &fileName)
 {
     Q_UNUSED(connection);
     Q_UNUSED(fileName);
 
-    // TODO : export Openswan connection to file
+    // TODO : export Libreswan connection to file
     mError = VpnUiPlugin::NotImplemented;
     return false;
 }
 
-#include "openswan.moc"
+#include "libreswan.moc"
